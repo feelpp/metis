@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-cache:
+    runs-on: self-ubuntu-24.04
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        env_variant: [default]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Spack
+        uses: spack/setup-spack@v2.1.1
+        with:
+          buildcache: true
+          color: true
+          path: _spack
+
+      - name: Install Metis via Spack
+        run: |
+          ls -l
+          spack -e spack/metis-${{ matrix.env_variant }} install --no-check-signature
+
+      - name: Push packages and update index
+        run: |
+          spack -e spack/metis-${{ matrix.env_variant }} mirror set --push --oci-username ${{ github.actor }} --oci-password "${{ secrets.GITHUB_TOKEN }}" numpex-buildcache
+          spack -e spack/metis-${{ matrix.env_variant }} buildcache push --base-image ubuntu:24.04 --unsigned --update-index numpex-buildcache
+        if: ${{ !cancelled() }}
+
+  build:
+    needs: build-cache
+    runs-on: self-ubuntu-24.04
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        env_variant: [default]
+        preset: [default, shared]
+    continue-on-error: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Spack
+        uses: spack/setup-spack@v2.1.1
+        with:
+          buildcache: true
+          color: true
+          path: _spack
+
+      - name: Spack install dependencies
+        run: spack -e spack/metis-${{ matrix.env_variant }} install --no-check-signature
+
+      - name: Configure CMake
+        shell: spack-bash {0}
+        run: |
+          spack env activate spack/metis-${{ matrix.env_variant }}
+          cmake --preset ${{ matrix.preset }}
+
+      - name: Build
+        run: cmake --build --preset ${{ matrix.preset }} --parallel
+
+      - name: Test
+        run: ctest --preset ${{ matrix.preset }} --output-on-failure
