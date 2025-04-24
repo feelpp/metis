@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(METIS VERSION 5.2.2 LANGUAGES C)
+project(METIS VERSION 5.3.0 LANGUAGES C)
 
 # -----------------------------------------------------------------------------
 # 1) Expose the same options that your old Makefile used:
@@ -18,7 +18,7 @@ option(OPENMP     "enable OpenMP support"                   OFF)
 find_package( GKlib REQUIRED)
 
 
-option(BUILD_SHARED_LIBS "Build shared Metis libraries"       OFF)
+option(BUILD_SHARED_LIBS "Build shared Metis libraries"       ${SHARED})
 # Installation toggle (MSVC disables install by default)
 if(MSVC)
   set(METIS_INSTALL FALSE)
