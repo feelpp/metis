@@ -1,0 +1,84 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Static Release",
+      "description": "Static Release build of METIS",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_SHARED_LIBS": "OFF",
+        "IDX64": "OFF",
+        "REAL64": "OFF",
+        "GDB": "OFF",
+        "ASSERT": "OFF",
+        "ASSERT2": "OFF",
+        "DEBUG": "OFF",
+        "GPROF": "OFF",
+        "VALGRIND": "OFF",
+        "OPENMP": "OFF",
+        "GKLIB_PATH": "",
+        "METIS_INSTALL": "ON"
+      }
+    },
+    {
+      "name": "shared",
+      "displayName": "Shared Release",
+      "description": "Shared-library Release build of METIS",
+      "inherits": "default",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": "ON",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin"
+      }
+    },
+    {
+      "name": "local-gklib",
+      "displayName": "local gklib path",
+      "inherits": "default",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": "ON",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
+        "GKLIB_PATH": "./GKlib"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    },
+    {
+      "name": "shared",
+      "configurePreset": "shared"
+    },
+    {
+      "name": "local-gklib",
+      "configurePreset": "local-gklib"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    },
+    {
+      "name": "shared",
+      "configurePreset": "shared"
+    },
+    {
+      "name": "local-gklib",
+      "configurePreset": "local-gklib"
+    }
+  ]
+}

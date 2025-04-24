@@ -60,3 +60,5 @@ graphs/*.npart.*
 GKlib
 .svn/
 
+.spack-env
+spack.lock
