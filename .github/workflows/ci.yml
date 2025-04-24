@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build-cache:
-    runs-on: self-ubuntu-24.04
+    runs-on: ubuntu-24.04
     permissions:
       packages: write
     strategy:
@@ -30,6 +30,17 @@ jobs:
           color: true
           path: _spack
 
+      - name: Checkout NumPEx Spack packages
+        uses: actions/checkout@v4
+        with:
+          repository: numpex/spack.numpex
+          path: numpex-spack
+          fetch-depth: 1
+
+      - name: Add NumPEx repo to Spack
+        run: |
+          spack repo add numpex-spack
+
       - name: Install Metis via Spack
         run: |
           ls -l
@@ -43,7 +54,7 @@ jobs:
 
   build:
     needs: build-cache
-    runs-on: self-ubuntu-24.04
+    runs-on: ubuntu-24.04
     permissions:
       packages: write
     strategy:
@@ -63,6 +74,17 @@ jobs:
           buildcache: true
           color: true
           path: _spack
+
+      - name: Checkout NumPEx Spack packages
+        uses: actions/checkout@v4
+        with:
+          repository: numpex/spack.numpex
+          path: numpex-spack
+          fetch-depth: 1
+
+      - name: Add NumPEx repo to Spack
+        run: |
+          spack repo add numpex-spack
 
       - name: Spack install dependencies
         run: spack -e spack/metis-${{ matrix.env_variant }} install --no-check-signature
