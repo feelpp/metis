@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - master
@@ -102,7 +104,9 @@ jobs:
         run: ctest --preset ${{ matrix.preset }} --output-on-failure
 
       - name: Package with CPack
-        run: cmake --build --preset ${{ matrix.preset }} --target package
+        run: |
+          cmake --build --preset ${{ matrix.preset }} --target package
+          cmake --build --preset ${{ matrix.preset }} --target package_source
 
       - name: Upload Metis artifacts
         uses: actions/upload-artifact@v4
