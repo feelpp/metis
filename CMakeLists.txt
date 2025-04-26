@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.21)
-project(METIS VERSION 5.3.0 LANGUAGES C)
+project(metis VERSION 5.3.1 LANGUAGES C)
 
+set(METIS_PRERELEASE "-rc.1")
+set(METIS_VERSION_STRING "${PROJECT_VERSION}${METIS_PRERELEASE}")
+set(METIS_VERSION_MAJOR 5)
+set(METIS_VERSION_MINOR 3)
+set(METIS_VERSION_PATCH 1)
+set(METIS_VERSION "${METIS_VERSION_MAJOR}.${METIS_VERSION_MINOR}.${METIS_VERSION_PATCH}${METIS_PRERELEASE}")
+set(METIS_VERSION_NUMBER
+  ((METIS_VERSION_MAJOR << 16) | (METIS_VERSION_MINOR << 9) | METIS_VERSION_PATCH)
+)
 # -----------------------------------------------------------------------------
 # 1) Expose the same options that your old Makefile used:
 # -----------------------------------------------------------------------------
@@ -110,3 +119,26 @@ install(
   DESTINATION ${ConfigPackageLocation}
 )
 
+# -----------------------------------------------------------------------------
+#  CPack packaging
+# -----------------------------------------------------------------------------
+include(InstallRequiredSystemLibraries)
+set(CPACK_PACKAGE_NAME    "Metis")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "METIS Graph Partitioning Library")
+set(CPACK_PACKAGE_VERSION_MAJOR "${METIS_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${METIS_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${METIS_VERSION_PATCH}")
+set(CPACK_PACKAGE_VERSION        "${METIS_VERSION}")
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${METIS_PRERELEASE}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}${METIS_PRERELEASE}")
+SET(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${METIS_PRERELEASE}-${CMAKE_SYSTEM_NAME}")
+
+# Optionally point to your LICENSE and README
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README  "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_GENERATOR "TGZ;ZIP")
+set(CPACK_SOURCE_IGNORE_FILES
+    "/build/;/.spack-env/;.lock$;.git/;~$;${CPACK_SOURCE_IGNORE_FILES}"
+)
+
+include(CPack)

@@ -100,3 +100,41 @@ jobs:
 
       - name: Test
         run: ctest --preset ${{ matrix.preset }} --output-on-failure
+
+      - name: Package with CPack
+        run: cmake --build --preset ${{ matrix.preset }} --target package
+
+      - name: Upload Metis artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: metis-artifacts-${{ matrix.preset }}
+          path: |
+            build/${{ matrix.preset }}/*.tar.gz
+            build/${{ matrix.preset }}/*.zip
+  release:
+    # only run on tag pushes
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download Metis artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # match the preset you want to release; here we pick "default"
+          name: metis-artifacts-default
+          path: dist
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # include both tgz and zip
+          files: |
+            dist/*.tar.gz
+            dist/*.zip
+          draft: false
+          # mark prereleases for pre-releases tags
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
+          tag_name: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}        
