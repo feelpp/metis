@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(metis VERSION 5.3.1 LANGUAGES C)
 
-set(METIS_PRERELEASE "-rc.2")
+set(METIS_PRERELEASE "-rc.3")
 set(METIS_VERSION_STRING "${PROJECT_VERSION}${METIS_PRERELEASE}")
 set(METIS_VERSION_MAJOR 5)
 set(METIS_VERSION_MINOR 3)
@@ -85,6 +85,11 @@ endif()
 # -----------------------------------------------------------------------------
 #  Add subdirectories for core library and programs
 # -----------------------------------------------------------------------------
+add_subdirectory(
+    ${XINCLUDE_DIR}
+    ${CMAKE_BINARY_DIR}/xinclude-build
+    EXCLUDE_FROM_ALL
+  )
 add_subdirectory(libmetis)
 add_subdirectory(programs)
 

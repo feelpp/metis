@@ -15,7 +15,7 @@ target_include_directories(metis
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/libmetis>
     $<BUILD_INTERFACE:${GKLIB_PATH}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:include/metis>
     
 )
 
