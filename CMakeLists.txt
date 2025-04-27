@@ -109,7 +109,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README  "${CMAKE_SOURCE_DIR}/README.md")
 set(CPACK_GENERATOR "TGZ;ZIP")
 set(CPACK_SOURCE_IGNORE_FILES
-    "/build/;/.spack-env/;.lock$;.git/;~$;${CPACK_SOURCE_IGNORE_FILES}"
+    "/build/;/.spack-env/;spack*;metis-*;.lock$;.git/;~$;${CPACK_SOURCE_IGNORE_FILES}"
 )
 
 include(CPack)
