@@ -38,6 +38,7 @@
       "cacheVariables": {
         "BUILD_SHARED_LIBS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin"
+        //"CMAKE_INSTALL_PREFIX": "${sourceDir}/build/${presetName}-install/"
       }
     },
     {
@@ -51,6 +52,38 @@
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
         "GKLIB_PATH": "./GKlib"
       }
+    },
+    {
+      "name": "int64",
+      "hidden": true,
+      "displayName": "64-bit integers",
+      "description": "64-bit integers build of METIS",
+      "inherits": "default",
+      "cacheVariables": {
+        "IDX64": "ON"
+      }
+    },
+    {
+      "name": "real64",
+      "hidden": true,
+      "displayName": "64-bit real numbers",
+      "description": "64-bit real numbers build of METIS",
+      "inherits": "default",
+      "cacheVariables": {
+        "REAL64": "ON"
+      }
+    },
+    {
+      "name": "int32-real32-shared",
+      "displayName": "32-bit index and real numbers (shared)",
+      "description": "32-bit index and real numbers build of METIS",
+      "inherits": ["shared"]
+    },
+    {
+      "name": "int64-real64-shared",
+      "displayName": "64-bit index and real numbers (shared)",
+      "description": "64-bit index and real numbers build of METIS",
+      "inherits": ["int64","real64", "shared"]
     }
   ],
   "buildPresets": [
@@ -65,6 +98,14 @@
     {
       "name": "local-gklib",
       "configurePreset": "local-gklib"
+    },
+    {
+      "name": "int32-real32-shared",
+      "configurePreset": "int32-real32-shared"
+    },
+    {
+      "name": "int64-real64-shared",
+      "configurePreset": "int64-real64-shared"
     }
   ],
   "testPresets": [
@@ -79,6 +120,14 @@
     {
       "name": "local-gklib",
       "configurePreset": "local-gklib"
+    },
+    {
+      "name": "int32-real32-shared",
+      "configurePreset": "int32-real32-shared"
+    },
+    {
+      "name": "int64-real64-shared",
+      "configurePreset": "int64-real64-shared"
     }
   ]
 }

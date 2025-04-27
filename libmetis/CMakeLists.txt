@@ -20,12 +20,6 @@ target_include_directories(metis
     
 )
 
-target_compile_definitions(metis
-  PRIVATE
-    IDXTYPEWIDTH=32
-    REALTYPEWIDTH=32
-)
-
 target_link_libraries(metis
   PUBLIC m GKlib::GKlib
 
