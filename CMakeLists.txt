@@ -51,45 +51,11 @@ if(REAL64)
   set(_METIS_REALWIDTH 64)
 endif()
 
-# -----------------------------------------------------------------------------
-#  Generate xinclude directory and headers
-# -----------------------------------------------------------------------------
-set(XINCLUDE_DIR "${CMAKE_BINARY_DIR}/xinclude")
-file(MAKE_DIRECTORY ${XINCLUDE_DIR})
-
-# metis.h.in should define @ _METIS_IDXWIDTH @ and @ _METIS_REALWIDTH @ at top
-configure_file(
-  "${CMAKE_SOURCE_DIR}/include/metis.h.in"
-  "${XINCLUDE_DIR}/metis.h"
-  @ONLY
-)
-
-# copy the CMakeLists.txt stub into xinclude
-configure_file(
-  "${CMAKE_SOURCE_DIR}/include/CMakeLists.txt"
-  "${XINCLUDE_DIR}/CMakeLists.txt"
-  COPYONLY
-)
-
-# make sure generated headers are found first
-include_directories(BEFORE ${XINCLUDE_DIR})
-
-# -----------------------------------------------------------------------------
-#  GKlib include/link paths (if provided)
-# -----------------------------------------------------------------------------
-if(GKLIB_PATH)
-  include_directories(${GKLIB_PATH}/include)
-  link_directories(${GKLIB_PATH}/lib)
-endif()
-
+include(GNUInstallDirs)
 # -----------------------------------------------------------------------------
 #  Add subdirectories for core library and programs
 # -----------------------------------------------------------------------------
-add_subdirectory(
-    ${XINCLUDE_DIR}
-    ${CMAKE_BINARY_DIR}/xinclude-build
-    EXCLUDE_FROM_ALL
-  )
+add_subdirectory(include)
 add_subdirectory(libmetis)
 add_subdirectory(programs)
 
