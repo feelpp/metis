@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(metis VERSION 5.3.1 LANGUAGES C)
 
-set(METIS_PRERELEASE "-rc.3")
+set(METIS_PRERELEASE "-rc.7")
 set(METIS_VERSION_STRING "${PROJECT_VERSION}${METIS_PRERELEASE}")
 set(METIS_VERSION_MAJOR 5)
 set(METIS_VERSION_MINOR 3)
@@ -109,7 +109,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README  "${CMAKE_SOURCE_DIR}/README.md")
 set(CPACK_GENERATOR "TGZ;ZIP")
 set(CPACK_SOURCE_IGNORE_FILES
-    "/build/;/.spack-env/;spack*;metis-*;.lock$;.git/;~$;${CPACK_SOURCE_IGNORE_FILES}"
+    "/build/;/.spack-env/;spack*;metis-*;.git/;~$;${CPACK_SOURCE_IGNORE_FILES}"
 )
 
 include(CPack)
