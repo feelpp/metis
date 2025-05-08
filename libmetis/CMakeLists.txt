@@ -14,15 +14,10 @@ target_include_directories(metis
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/libmetis>
+    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
     $<BUILD_INTERFACE:${GKLIB_PATH}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:include/metis>
     
-)
-
-target_compile_definitions(metis
-  PRIVATE
-    IDXTYPEWIDTH=32
-    REALTYPEWIDTH=32
 )
 
 target_link_libraries(metis

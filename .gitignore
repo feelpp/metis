@@ -61,4 +61,4 @@ GKlib
 .svn/
 
 .spack-env
-spack.lock
+metis-*/
